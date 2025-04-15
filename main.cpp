@@ -4,15 +4,14 @@
 #include <GL/gl.h>
 #include <math.h>
 
-float p = 480.0, q = 620.0, cloud1X=80.0, cloud2X=620.0, cloud3X=1030.0; // Initial position
-bool movingUpB1 = true; // Track direction
-bool movingUpB2 = true; // Track direction
+float p = 480.0, q = 620.0, cloud1X=80.0, cloud2X=620.0, cloud3X=1030.0;
+bool movingUpB1 = true;
+bool movingUpB2 = true;
 float ferrisWheelAngle = 0.0f;
-float rotationSpeed = 0.05f; // Adjust speed as needed
-
-float busX = 1280.0f;          // Starting X position (right side of screen)
-float busSpeed = 0.09f;         // Horizontal movement speed
-float wheelAngle = 0.0f;       // Current wheel rotation angle
+float rotationSpeed = 0.05f;
+float busX = 1280.0f;
+float busSpeed = 0.09f;
+float wheelAngle = 0.0f;
 float wheelRotationSpeed = 5.0f;
 
 
@@ -28,9 +27,7 @@ void init(void)
 void stripes(int p, int q,int n, int gapWidth, int startX)
 {
     int stripeWidth = 5;
-    //int gapWidth = 4;
 
-    //int startX = 95;
     for (int i = 0; i < n; i++)
     {
         glColor3f(0.36, 0.20, 0.10);
@@ -41,7 +38,7 @@ void stripes(int p, int q,int n, int gapWidth, int startX)
         glVertex2i(startX, q);
         glEnd();
 
-        startX += stripeWidth + gapWidth; // Move to the next stripe position
+        startX += stripeWidth + gapWidth;
     }
 }
 
@@ -92,27 +89,25 @@ void RallingStripes(int p, int q,int n, int gapWidth, int startX, int stripeWidt
         glVertex2i(startX, q);
         glEnd();
 
-        startX += stripeWidth + gapWidth; // Move to the next stripe position
+        startX += stripeWidth + gapWidth;
     }
 }
 
 void sculpture1()
 {
-    float stripeHeight = 6.5;  // stripe height
-    float totalHeight = 670 - 60;  // Total height of the trapezoid
-
-    //the width reduction based on the bottom-most stripe
+    float stripeHeight = 6.5;
+    float totalHeight = 670 - 60;
     float bottomLeftX = 1090;
     float bottomRightX = 1130;
     float bottomWidth = bottomRightX - bottomLeftX;
 
-    //same width for all stripes (same as the bottom-most stripe)
-    float stripeWidth = bottomWidth - 10; //5px minus on each side
+
+    float stripeWidth = bottomWidth - 10;
 
     for (int i = 1; i < 25; i++)
     {
-        float stripeBottomY = 60 + i * (stripeHeight + 15);  // Bottom Y of stripe
-        float stripeTopY = stripeBottomY + stripeHeight;            // Top Y of stripe
+        float stripeBottomY = 60 + i * (stripeHeight + 15);
+        float stripeTopY = stripeBottomY + stripeHeight;
 
         float stripeLeftXBottom = 1080 + 10;
         float stripeRightXBottom = 1140 - 10;
@@ -155,7 +150,7 @@ void BorderedCircle(GLfloat rx, GLfloat ry, GLfloat cx, GLfloat cy, GLfloat n)
         float angle = 2 * 3.14 * i / n;
         float x = rx * cosf(angle);
         float y = ry * sinf(angle);
-        glVertex2f(x + cx, y + cy);  // Vertex for the border
+        glVertex2f(x + cx, y + cy);
     }
     glEnd();
 }
@@ -199,12 +194,10 @@ void drawCloud(float startX, float startY)
 
 void DrawRotatingFerrisWheel() {
     glPushMatrix();
-    // Move to center, rotate, then move back
     glTranslatef(860, 380, 0);
     glRotatef(ferrisWheelAngle, 0, 0, 1);
     glTranslatef(-860, -380, 0);
 
-    // Draw all components that should rotate together
     glColor3f(0, 0.7, 0.99);
     BorderedCircle(180, 180, 860, 380, 100); // Outer border
 
@@ -219,7 +212,7 @@ void DrawRotatingFerrisWheel() {
 
     DrawLinesFromMiniCircle(20, 160, 860, 380, 40);
 
-    //outer mini circles
+
     for (int i = 0; i < 12; i++) {
         float angle = 2 * 3.14f * i / 12;
         float x = 185 * cosf(angle) + 860;
@@ -253,7 +246,7 @@ void drawStripes()
         float yBottom = 60 + i * (stripeHeight + gap);
         float yTop = yBottom + stripeHeight;
 
-        glColor3f(0.9, 1, 1);  // Light stripe color
+        glColor3f(0.9, 1, 1);
         glBegin(GL_POLYGON);
         glVertex2f(startX, yBottom);
         glVertex2f(endX, yBottom);
@@ -266,12 +259,11 @@ void drawStripes()
 
 void drawStripedGridInEllipse(GLfloat rx, GLfloat ry, GLfloat cx, GLfloat cy, int stripeW, int stripeH, int spacing)
 {
-    // Vertical stripes
+
     for (int x = cx - rx; x <= cx + rx - stripeW; x += stripeW + spacing)
     {
         for (int y = cy - ry; y <= cy + ry - 1; y++)
         {
-            // Check ellipse center of rectangle
             float dx = (x + stripeW / 2.0) - cx;
             float dy = (y + stripeH / 2.0) - cy;
             if ((dx * dx) / (rx * rx) + (dy * dy) / (ry * ry) <= 1.0f)
@@ -286,7 +278,7 @@ void drawStripedGridInEllipse(GLfloat rx, GLfloat ry, GLfloat cx, GLfloat cy, in
             }
         }
     }
-    // Horizontal stripes
+
     for (int y = cy - ry; y <= cy + ry - stripeH; y += stripeH + spacing)
     {
         for (int x = cx - rx; x <= cx + rx - 1; x++)
